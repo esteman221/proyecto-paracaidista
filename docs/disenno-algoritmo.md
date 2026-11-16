@@ -92,16 +92,105 @@ el estado ni avanza el tiempo.
 
 ## 8. Avance mediante RK4
 
-A partir de la distancia y velocidad actuales:
+La función `paso_rk4` recibe la distancia y velocidad actuales,
+la masa total, beta y el paso temporal h. Devuelve la distancia
+y velocidad al finalizar el intervalo.
 
-1. Evaluar las derivadas al inicio del intervalo.
-2. Evaluarlas en un primer estado intermedio.
-3. Evaluarlas en un segundo estado intermedio.
-4. Evaluarlas en un estado estimado al final.
-5. Combinar las cuatro evaluaciones para obtener
-   la distancia y velocidad siguientes.
+Se utiliza la convención en que los valores k representan
+pendientes y no incluyen el factor h.
 
-Las dos variables se actualizarán conjuntamente.
+### Evaluaciones
+
+Primera evaluación:
+
+$$
+k_{1x}=v,\qquad
+k_{1v}=g-\frac{\beta}{m}v
+$$
+
+Segunda evaluación:
+
+$$
+v_2=v+\frac{h}{2}k_{1v}
+$$
+
+$$
+k_{2x}=v_2,\qquad
+k_{2v}=g-\frac{\beta}{m}v_2
+$$
+
+Tercera evaluación:
+
+$$
+v_3=v+\frac{h}{2}k_{2v}
+$$
+
+$$
+k_{3x}=v_3,\qquad
+k_{3v}=g-\frac{\beta}{m}v_3
+$$
+
+Cuarta evaluación:
+
+$$
+v_4=v+hk_{3v}
+$$
+
+$$
+k_{4x}=v_4,\qquad
+k_{4v}=g-\frac{\beta}{m}v_4
+$$
+
+### Actualización del estado
+
+$$
+x_{\text{nuevo}}
+=x+\frac{h}{6}(k_{1x}+2k_{2x}+2k_{3x}+k_{4x})
+$$
+
+$$
+v_{\text{nuevo}}
+=v+\frac{h}{6}(k_{1v}+2k_{2v}+2k_{3v}+k_{4v})
+$$
+
+Las derivadas de este modelo no dependen explícitamente
+de la posición ni del tiempo. Por eso, para evaluar las
+pendientes solo se necesitan las velocidades intermedias.
+
+La distancia y velocidad originales se conservan durante
+las cuatro evaluaciones. Los valores nuevos se calculan
+al finalizar el paso.
+
+### Pseudocódigo
+
+```text
+FUNCION paso_rk4(x, v, masa, beta, h)
+
+    (k1x, k1v) ← calcular_derivadas(v, masa, beta)
+
+    v2 ← v + (h / 2) * k1v
+    (k2x, k2v) ← calcular_derivadas(v2, masa, beta)
+
+    v3 ← v + (h / 2) * k2v
+    (k3x, k3v) ← calcular_derivadas(v3, masa, beta)
+
+    v4 ← v + h * k3v
+    (k4x, k4v) ← calcular_derivadas(v4, masa, beta)
+
+    x_nuevo ← x + (h / 6) * (k1x + 2*k2x + 2*k3x + k4x)
+    v_nuevo ← v + (h / 6) * (k1v + 2*k2v + 2*k3v + k4v)
+
+    DEVOLVER (x_nuevo, v_nuevo)
+
+FIN FUNCION
+```
+
+La función `simular_caida` será responsable de repetir
+los pasos y actualizar el tiempo.
+
+El tamaño del paso deberá comprobarse mediante pruebas
+de precisión y estabilidad; no cualquier valor positivo
+de h produce una aproximación adecuada.
 
 ## 9. Simulación de una caída
 
