@@ -36,6 +36,15 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.2 — Modelo matemático
+
+- Definición de supuestos, variables y unidades.
+- Formulación de las ecuaciones de velocidad y distancia.
+- Condiciones iniciales y criterio de llegada al suelo.
+- Definición de la velocidad objetivo y del caso solicitado.
+- Soluciones analíticas para verificar la simulación.
+- Distinción entre velocidad límite y velocidad de impacto.
+
 ### v0.1.1
 - Correccion del readme
 
