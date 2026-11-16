@@ -36,6 +36,13 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3 — Diseño del algoritmo (en desarrollo)
+
+- Definición de las funciones y sus responsabilidades.
+- Organización del flujo del programa desde `main`.
+- Separación entre simulación de la caída y búsqueda de resistencia.
+- Pendiente: detalle de RK4 y diagramas Nassi-Schneiderman.
+
 ### v0.2 — Modelo matemático
 
 - Definición de supuestos, variables y unidades.
@@ -45,7 +52,7 @@ aproximada de 8 km/h.
 - Soluciones analíticas para verificar la simulación.
 - Distinción entre velocidad límite y velocidad de impacto.
 
-### v0.1.1
+### v0.1.1 - Correccion del Markdown
 - Correccion del readme
 
 ### v0.1 — Estructura inicial
