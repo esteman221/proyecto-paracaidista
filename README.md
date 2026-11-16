@@ -34,7 +34,14 @@ aproximada de 8 km/h.
 - `docs/diagramas/`: diagramas Nassi-Schneiderman.
 - `pruebas/`: casos de prueba y comparación de resultados.
 
-## Estado
+## Versionamiento
 
-Estructura inicial del proyecto. Pendiente desarrollar el diseño
-del algoritmo y las implementaciones.
+### v0.1.1
+- Correccion del readme
+
+### v0.1 — Estructura inicial
+
+- Organización de carpetas para C, Pascal y Fortran.
+- Directorios para documentación, diagramas y pruebas.
+- Configuración de `.gitignore`.
+- Descripción inicial del proyecto en el README.
