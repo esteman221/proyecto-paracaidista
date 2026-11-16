@@ -36,6 +36,15 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.1.1 — Correcciones del README
+- Agregar Readme
+
+### v0.3.1 Correcciones a la funcion RK4
+
+- Fórmulas y pseudocódigo de RK4 para distancia y velocidad.
+- Pendiente: parámetros numéricos, detalle del impacto,
+  búsqueda por bisección y diagramas Nassi-Schneiderman.
+
 ### v0.3 — Diseño del algoritmo (en desarrollo)
 
 - Definición de las funciones y sus responsabilidades.
@@ -52,7 +61,7 @@ aproximada de 8 km/h.
 - Soluciones analíticas para verificar la simulación.
 - Distinción entre velocidad límite y velocidad de impacto.
 
-### v0.1.1 - Correccion del Markdown
+### v0.1.1 - Correccion del README
 - Correccion del readme
 
 ### v0.1 — Estructura inicial
