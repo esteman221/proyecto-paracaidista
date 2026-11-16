@@ -1,0 +1,14 @@
+# Ejecutables y archivos de compilación
+build/
+*.o
+*.mod
+*.ppu
+*.exe
+
+# Archivos temporales
+*.swp
+*~
+.DS_Store
+
+# Caché de herramientas de pruebas en Python
+__pycache__/
