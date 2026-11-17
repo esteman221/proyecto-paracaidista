@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1600" height="2260" viewBox="0 0 1600 2260">
+
+  <rect width="1600" height="2260" fill="white"/>
+
+  <style>
+    text {
+      font-family: Arial, sans-serif;
+      font-size: 17px;
+      fill: #172033;
+      text-anchor: middle;
+    }
+    .titulo {
+      font-size: 27px;
+      font-weight: bold;
+    }
+    .bloque {
+      fill: white;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .condicion {
+      fill: #e8f1fa;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .ciclo {
+      fill: #e2e8f0;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .linea {
+      fill: none;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+  </style>
+
+  <text x="800" y="42" class="titulo">buscar_beta</text>
+  <text x="800" y="73">
+    Nassi-Schneiderman — detalle de operaciones resumidas en la sección 10 del diseño
+  </text>
+
+  <!-- Preparación -->
+  <rect x="30" y="100" width="1540" height="65" class="bloque"/>
+  <text x="800" y="140">
+    Recibir masa, altura, objetivo y configuración previamente validados
+  </text>
+
+  <rect x="30" y="165" width="1540" height="90" class="bloque"/>
+  <text x="800" y="194">
+    exito ← FALSO; continuar ← VERDADERO; beta ← 0
+  </text>
+  <text x="800" y="222">
+    resultado ← SIN_RESULTADO; motivo ← "Búsqueda incompleta"
+  </text>
+  <text x="800" y="247">
+    tolerancia ← configuración.tolerancia_velocidad
+  </text>
+
+  <!-- Operación resumida: viabilidad -->
+  <rect x="30" y="255" width="1540" height="120" class="bloque"/>
+  <text x="800" y="285">
+    Comprobar viabilidad mediante velocidad_libre = raíz(2 × g × altura)
+  </text>
+  <text x="800" y="314">
+    Resolver errores numéricos, objetivo inalcanzable y caso beta = 0
+  </text>
+  <text x="800" y="343">
+    Si el caso queda resuelto, establecer continuar ← FALSO y guardar el resultado o error
+  </text>
+  <text x="800" y="367">
+    Mantener continuar ← VERDADERO únicamente cuando sea necesaria la búsqueda
+  </text>
+
+  <!-- Selección general -->
+  <rect x="30" y="375" width="1540" height="90" class="condicion"/>
+  <path d="M30 375 L1370 465 L1570 375" class="linea"/>
+  <text x="800" y="404">¿continuar?</text>
+  <text x="85" y="449">Sí</text>
+  <text x="1525" y="449">No</text>
+
+  <!-- Rama sin búsqueda -->
+  <rect x="1370" y="465" width="200" height="1685" class="bloque"/>
+  <text x="1470" y="1240">Conservar</text>
+  <text x="1470" y="1270">el resultado</text>
+  <text x="1470" y="1300">o el motivo</text>
+  <text x="1470" y="1330">del error</text>
+
+  <!-- Inicialización del intervalo -->
+  <rect x="30" y="465" width="1340" height="85" class="bloque"/>
+  <text x="700" y="493">inferior ← 0; superior ← masa / (1 segundo)</text>
+  <text x="700" y="523">
+    duplicaciones ← 0; intervalo_encontrado ← FALSO
+  </text>
+
+  <!-- Primer ciclo -->
+  <rect x="30" y="550" width="1340" height="610" class="ciclo"/>
+  <text x="700" y="588">
+    MIENTRAS continuar Y NO intervalo_encontrado
+  </text>
+
+  <rect x="65" y="615" width="1305" height="90" class="bloque"/>
+  <text x="717" y="644">
+    Comprobar superior finito y positivo; si es válido, beta ← superior y simular_caida
+  </text>
+  <text x="717" y="674">
+    Ante un límite inválido o una simulación fallida: guardar motivo y continuar ← FALSO
+  </text>
+
+  <rect x="65" y="705" width="1305" height="85" class="condicion"/>
+  <path d="M65 705 L1120 790 L1370 705" class="linea"/>
+  <text x="717" y="733">¿continuar?</text>
+  <text x="115" y="774">Sí</text>
+  <text x="1320" y="774">No</text>
+
+  <rect x="1120" y="790" width="250" height="370" class="bloque"/>
+  <text x="1245" y="956">Conservar error</text>
+
+  <rect x="65" y="790" width="1055" height="55" class="bloque"/>
+  <text x="592" y="825">error ← resultado.v − objetivo</text>
+
+  <!-- Selección múltiple de resultados -->
+  <rect x="65" y="845" width="1055" height="90" class="condicion"/>
+  <text x="592" y="871">Clasificar el error; comprobar primero la tolerancia</text>
+  <path d="M65 887 H1120 M415 887 V935 M765 887 V935" class="linea"/>
+  <text x="240" y="919">|error| ≤ tolerancia</text>
+  <text x="590" y="919">Fuera de tolerancia: error &lt; 0</text>
+  <text x="942" y="919">Fuera de tolerancia: error &gt; 0</text>
+
+  <rect x="65" y="935" width="350" height="225" class="bloque"/>
+  <text x="240" y="1000">exito ← VERDADERO</text>
+  <text x="240" y="1030">continuar ← FALSO</text>
+  <text x="240" y="1060">motivo ← "Resistencia encontrada"</text>
+
+  <rect x="415" y="935" width="350" height="225" class="bloque"/>
+  <text x="590" y="1020">intervalo_encontrado</text>
+  <text x="590" y="1050">← VERDADERO</text>
+
+  <rect x="765" y="935" width="355" height="225" class="bloque"/>
+  <text x="942" y="973">Duplicar superior si quedan</text>
+  <text x="942" y="1001">expansiones disponibles;</text>
+  <text x="942" y="1029">aumentar duplicaciones.</text>
+  <text x="942" y="1065">Si se agotaron: guardar error</text>
+  <text x="942" y="1093">y continuar ← FALSO.</text>
+
+  <!-- Segundo ciclo -->
+  <rect x="30" y="1160" width="1340" height="55" class="bloque"/>
+  <text x="700" y="1195">iteraciones ← 0</text>
+
+  <rect x="30" y="1215" width="1340" height="765" class="ciclo"/>
+  <text x="700" y="1245">
+    MIENTRAS continuar Y intervalo_encontrado
+  </text>
+  <text x="700" y="1273">
+    Y iteraciones &lt; configuración.max_busqueda
+  </text>
+
+  <rect x="65" y="1290" width="1305" height="60" class="bloque"/>
+  <text x="717" y="1328">
+    medio ← inferior + (superior − inferior) / 2
+  </text>
+
+  <rect x="65" y="1350" width="1305" height="110" class="bloque"/>
+  <text x="717" y="1380">
+    Comprobar que medio sea distinto de ambos extremos
+  </text>
+  <text x="717" y="1409">
+    Si puede avanzarse: beta ← medio; resultado ← simular_caida con beta
+  </text>
+  <text x="717" y="1438">
+    Ante estancamiento o fallo de simulación: guardar motivo y continuar ← FALSO
+  </text>
+
+  <rect x="65" y="1460" width="1305" height="85" class="condicion"/>
+  <path d="M65 1460 L1120 1545 L1370 1460" class="linea"/>
+  <text x="717" y="1488">¿continuar?</text>
+  <text x="115" y="1529">Sí</text>
+  <text x="1320" y="1529">No</text>
+
+  <rect x="1120" y="1545" width="250" height="375" class="bloque"/>
+  <text x="1245" y="1735">Conservar error</text>
+
+  <rect x="65" y="1545" width="1055" height="60" class="bloque"/>
+  <text x="592" y="1583">error ← resultado.v − objetivo</text>
+
+  <rect x="65" y="1605" width="1055" height="90" class="condicion"/>
+  <text x="592" y="1631">Clasificar el error; comprobar primero la tolerancia</text>
+  <path d="M65 1647 H1120 M415 1647 V1695 M765 1647 V1695" class="linea"/>
+  <text x="240" y="1679">|error| ≤ tolerancia</text>
+  <text x="590" y="1679">Fuera de tolerancia: error &gt; 0</text>
+  <text x="942" y="1679">Fuera de tolerancia: error &lt; 0</text>
+
+  <rect x="65" y="1695" width="350" height="225" class="bloque"/>
+  <text x="240" y="1770">exito ← VERDADERO</text>
+  <text x="240" y="1800">continuar ← FALSO</text>
+  <text x="240" y="1830">motivo ← "Resistencia encontrada"</text>
+
+  <rect x="415" y="1695" width="350" height="225" class="bloque"/>
+  <text x="590" y="1805">inferior ← medio</text>
+
+  <rect x="765" y="1695" width="355" height="225" class="bloque"/>
+  <text x="942" y="1805">superior ← medio</text>
+
+  <rect x="65" y="1920" width="1305" height="60" class="bloque"/>
+  <text x="717" y="1958">iteraciones ← iteraciones + 1</text>
+
+  <!-- Salida del segundo ciclo -->
+  <rect x="30" y="1980" width="1340" height="85" class="condicion"/>
+  <path d="M30 1980 L700 2065 L1370 1980" class="linea"/>
+  <text x="700" y="2008">¿continuar sigue siendo VERDADERO?</text>
+  <text x="85" y="2049">Sí</text>
+  <text x="1315" y="2049">No</text>
+
+  <rect x="30" y="2065" width="670" height="85" class="bloque"/>
+  <text x="365" y="2099">motivo ← "Límite de iteraciones</text>
+  <text x="365" y="2127">de búsqueda alcanzado"</text>
+
+  <rect x="700" y="2065" width="670" height="85" class="bloque"/>
+  <text x="1035" y="2115">Conservar resultado y motivo</text>
+
+  <!-- Retorno común -->
+  <rect x="30" y="2150" width="1540" height="75" class="bloque"/>
+  <text x="800" y="2196">
+    Devolver (exito, motivo, beta, resultado)
+  </text>
+
+</svg>

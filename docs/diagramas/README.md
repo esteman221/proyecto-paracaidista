@@ -63,8 +63,24 @@ la distancia y la velocidad aproximadas del impacto.
 El resultado solo es válido cuando el indicador de éxito
 es verdadero.
 
+## Búsqueda de resistencia
+
+![Diagrama de buscar_beta](06-buscar-beta.svg)
+
+Comprueba la viabilidad del objetivo, construye un intervalo
+que encierra la solución y aplica bisección para encontrar beta.
+
+Cada candidato se evalúa mediante una simulación completa
+desde el reposo.
+
+El diagrama resume algunas operaciones de comprobación.
+Su lógica detallada aparece en la sección 10 de
+`../diseno-algoritmo.md`.
+
+El resultado solo se considera válido cuando el indicador
+de éxito es verdadero.
+
 ## Diagramas pendientes
 
 - Lectura y validación de datos.
-- Búsqueda de beta.
 - Presentación de resultados.

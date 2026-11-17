@@ -36,6 +36,11 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.8 — Diagrama de busqueda de Beta
+
+- Diagrama del proceso de Busqueda de Beta.
+- Pendiente: diagramas de lectura, validación y presentación.
+
 ### v0.3.7 — Diagrama de refinar impacto
 
 - Diagrama de refinamiento del impacto del paracaidista. 
