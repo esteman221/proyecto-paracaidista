@@ -36,6 +36,11 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.5 - Diagramas de RK4 y calcular derivada
+
+- Diagramas de `calcular_derivadas` y `paso_rk4`.
+- Pendiente: completar los diagramas restantes.
+
 ### v0.3.4 — Primer Diagrama
 
 - Diagrama Nassi-Schneiderman de `main`.

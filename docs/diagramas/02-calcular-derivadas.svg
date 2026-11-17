@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="900" height="420" viewBox="0 0 900 420">
+
+  <rect width="900" height="420" fill="white"/>
+
+  <style>
+    text {
+      font-family: Arial, sans-serif;
+      font-size: 19px;
+      fill: #172033;
+      text-anchor: middle;
+    }
+    .titulo {
+      font-size: 27px;
+      font-weight: bold;
+    }
+    .bloque {
+      fill: white;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+  </style>
+
+  <text x="450" y="42" class="titulo">calcular_derivadas</text>
+  <text x="450" y="73">Diagrama Nassi-Schneiderman</text>
+
+  <rect x="30" y="100" width="840" height="70" class="bloque"/>
+  <text x="450" y="143">Recibir velocidad v, masa total m y beta</text>
+
+  <rect x="30" y="170" width="840" height="70" class="bloque"/>
+  <text x="450" y="213">derivada_distancia ← v</text>
+
+  <rect x="30" y="240" width="840" height="70" class="bloque"/>
+  <text x="450" y="283">derivada_velocidad ← g − (beta / m) × v</text>
+
+  <rect x="30" y="310" width="840" height="80" class="bloque"/>
+  <text x="450" y="357">
+    Devolver (derivada_distancia, derivada_velocidad)
+  </text>
+
+</svg>
