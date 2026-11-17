@@ -36,7 +36,12 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
-### v0.4 - Respecto al uso de la IA
+### v0.4.1 — Enunciado del Proyecto
+
+- Se agrego el enunciado del Proyecto.
+- Se modifico ligeramente el README principal.
+
+### v0.4 — Respecto al uso de la IA
 
 - Incorporación de USO-DE-LA-IA.md para documentar el apoyo
   de IA en la redacción y elaboración de diagramas SVG.
