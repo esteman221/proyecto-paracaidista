@@ -36,6 +36,10 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.9 — Diagramas restantes realizados
+
+- Diagramas restantes realizados. 
+
 ### v0.3.8 — Diagrama de busqueda de Beta
 
 - Diagrama del proceso de Busqueda de Beta.

@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="1500" viewBox="0 0 1200 1500">
+  <style>
+    text {
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      fill: #172033;
+    }
+    .titulo { font-size: 25px; font-weight: bold; }
+    .negrita { font-weight: bold; }
+    .bloque { fill: white; stroke: #334155; stroke-width: 2; }
+    .seleccion { fill: #e8f1fa; stroke: #334155; stroke-width: 2; }
+    .linea { fill: none; stroke: #334155; stroke-width: 2; }
+  </style>
+
+  <rect width="1200" height="1500" fill="white"/>
+
+  <text x="600" y="40" text-anchor="middle" class="titulo">
+    Lectura y validación de datos
+  </text>
+
+  <!-- FUNCIÓN leer_datos -->
+  <rect x="30" y="70" width="1140" height="530" class="bloque"/>
+
+  <rect x="30" y="70" width="1140" height="55" class="seleccion"/>
+  <text x="600" y="105" text-anchor="middle" class="negrita">
+    leer_datos
+  </text>
+
+  <path d="M30 185 H1170 M30 250 H1170 M30 320 H1170"
+        class="linea"/>
+
+  <text x="55" y="160">
+    Inicializar masas y altura en 0; lectura_correcta ← falso.
+  </text>
+
+  <text x="55" y="212">
+    Solicitar masa de la persona (kg), masa del equipo (kg)
+  </text>
+  <text x="55" y="237">
+    y altura inicial (m); capturar las tres entradas.
+  </text>
+
+  <text x="55" y="280">
+    Intentar convertir cada entrada completa a un número.
+  </text>
+  <text x="55" y="307">
+    Registrar si las tres conversiones fueron correctas.
+  </text>
+
+  <rect x="30" y="320" width="1140" height="90" class="seleccion"/>
+  <path d="M30 320 L600 410 L1170 320" class="linea"/>
+  <text x="600" y="348" text-anchor="middle">
+    ¿Las tres conversiones fueron correctas?
+  </text>
+  <text x="150" y="395" text-anchor="middle">Sí</text>
+  <text x="1050" y="395" text-anchor="middle">No</text>
+
+  <path d="M600 410 V510 M30 510 H1170" class="linea"/>
+
+  <text x="55" y="447">
+    Guardar los tres valores numéricos.
+  </text>
+  <text x="55" y="479">
+    lectura_correcta ← verdadero.
+  </text>
+
+  <text x="625" y="447">
+    Mantener lectura_correcta ← falso.
+  </text>
+  <text x="625" y="479">
+    Los valores no se utilizarán.
+  </text>
+
+  <text x="55" y="545">
+    Devolver masa_persona, masa_equipo, altura
+  </text>
+  <text x="55" y="575">
+    y lectura_correcta.
+  </text>
+
+  <!-- FUNCIÓN validar_datos -->
+  <rect x="30" y="650" width="1140" height="810" class="bloque"/>
+
+  <rect x="30" y="650" width="1140" height="55" class="seleccion"/>
+  <text x="600" y="685" text-anchor="middle" class="negrita">
+    validar_datos
+  </text>
+
+  <path d="M30 765 H1170 M30 825 H1170" class="linea"/>
+
+  <text x="55" y="742">
+    Entrada: masa_persona, masa_equipo y altura.
+  </text>
+  <text x="55" y="802">
+    valido ← falso; masa_total ← 0; motivo ← "Datos inválidos".
+  </text>
+
+  <rect x="30" y="825" width="1140" height="90" class="seleccion"/>
+  <path d="M30 825 L600 915 L1170 825" class="linea"/>
+  <text x="600" y="853" text-anchor="middle">
+    ¿Los tres valores son finitos?
+  </text>
+  <text x="150" y="900" text-anchor="middle">Sí</text>
+  <text x="1050" y="900" text-anchor="middle">No</text>
+
+  <path d="M820 915 V1380" class="linea"/>
+  <text x="845" y="955">motivo ←</text>
+  <text x="845" y="985">"Los valores deben</text>
+  <text x="845" y="1015">ser finitos".</text>
+
+  <rect x="30" y="915" width="790" height="110" class="seleccion"/>
+  <path d="M30 915 L425 1025 L820 915" class="linea"/>
+  <text x="425" y="942" text-anchor="middle">
+    ¿masa_persona &gt; 0, masa_equipo ≥ 0
+  </text>
+  <text x="425" y="969" text-anchor="middle">
+    y altura &gt; 0?
+  </text>
+  <text x="110" y="1010">Sí</text>
+  <text x="725" y="1010">No</text>
+
+  <path d="M550 1025 V1380" class="linea"/>
+
+  <text x="570" y="1060">motivo ←</text>
+  <text x="570" y="1090">"Persona y altura</text>
+  <text x="570" y="1120">deben ser positivas;</text>
+  <text x="570" y="1150">equipo no negativo".</text>
+
+  <text x="50" y="1060">masa_total ← masa_persona + masa_equipo.</text>
+  <path d="M30 1085 H550" class="linea"/>
+
+  <rect x="30" y="1085" width="520" height="95" class="seleccion"/>
+  <path d="M30 1085 L290 1180 L550 1085" class="linea"/>
+  <text x="290" y="1115" text-anchor="middle">
+    ¿masa_total es finita?
+  </text>
+  <text x="95" y="1165">Sí</text>
+  <text x="455" y="1165">No</text>
+
+  <path d="M290 1180 V1380" class="linea"/>
+
+  <text x="50" y="1220">valido ← verdadero.</text>
+  <text x="50" y="1260">motivo ←</text>
+  <text x="50" y="1290">"Datos válidos".</text>
+
+  <text x="310" y="1220">motivo ←</text>
+  <text x="310" y="1250">"La suma de masas</text>
+  <text x="310" y="1280">no es finita".</text>
+
+  <path d="M30 1380 H1170" class="linea"/>
+  <text x="55" y="1412">
+    Devolver valido, motivo y masa_total.
+  </text>
+  <text x="55" y="1442">
+    masa_total solo se utiliza cuando valido = verdadero.
+  </text>
+</svg>

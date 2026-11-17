@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1100" height="770" viewBox="0 0 1100 770">
+  <style>
+    text {
+      font-family: Arial, sans-serif;
+      font-size: 19px;
+      fill: #172033;
+    }
+    .titulo { font-size: 25px; font-weight: bold; }
+    .bloque { fill: white; stroke: #334155; stroke-width: 2; }
+    .cabecera { fill: #e8f1fa; stroke: #334155; stroke-width: 2; }
+    .linea { fill: none; stroke: #334155; stroke-width: 2; }
+  </style>
+
+  <rect width="1100" height="770" fill="white"/>
+
+  <text x="550" y="45" text-anchor="middle" class="titulo">
+    Presentación de resultados
+  </text>
+
+  <rect x="30" y="75" width="1040" height="650" class="bloque"/>
+  <rect x="30" y="75" width="1040" height="60" class="cabecera"/>
+
+  <text x="550" y="113" text-anchor="middle" class="titulo">
+    mostrar_resultados
+  </text>
+
+  <path d="M30 205 H1070 M30 275 H1070 M30 350 H1070
+           M30 425 H1070 M30 500 H1070 M30 575 H1070
+           M30 650 H1070"
+        class="linea"/>
+
+  <text x="55" y="165">
+    Entrada: beta y resultado de la simulación.
+  </text>
+  <text x="55" y="192">
+    Precondición: búsqueda y simulación final exitosas.
+  </text>
+
+  <text x="55" y="247">
+    velocidad_kmh ← resultado.v × 3.6.
+  </text>
+
+  <text x="55" y="320">
+    Mostrar coeficiente de resistencia beta, en kg/s.
+  </text>
+
+  <text x="55" y="395">
+    Mostrar tiempo hasta el impacto: resultado.t, en segundos.
+  </text>
+
+  <text x="55" y="470">
+    Mostrar distancia descendida: resultado.x, en metros.
+  </text>
+
+  <text x="55" y="545">
+    Mostrar velocidad de impacto: resultado.v, en m/s.
+  </text>
+
+  <text x="55" y="620">
+    Mostrar velocidad de impacto: velocidad_kmh, en km/h.
+  </text>
+
+  <text x="550" y="695" text-anchor="middle">
+    Fin de mostrar_resultados
+  </text>
+</svg>

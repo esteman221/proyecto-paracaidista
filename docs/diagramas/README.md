@@ -80,7 +80,41 @@ Su lógica detallada aparece en la sección 10 de
 El resultado solo se considera válido cuando el indicador
 de éxito es verdadero.
 
-## Diagramas pendientes
+## Lectura y validación de datos
 
-- Lectura y validación de datos.
-- Presentación de resultados.
+![Lectura y validación de datos](07-entrada-datos.svg)
+
+Incluye dos funciones separadas:
+
+- `leer_datos`: solicita las entradas y comprueba su conversión
+  a valores numéricos.
+- `validar_datos`: verifica valores finitos, restricciones de
+  masa y altura, y calcula la masa total.
+
+La masa total solo se utiliza cuando la validación es exitosa.
+
+## Presentación de resultados
+
+![Presentación de resultados](08-mostrar-resultados.svg)
+
+Muestra el coeficiente de resistencia, el tiempo de caída,
+la distancia descendida y la velocidad de impacto.
+
+La velocidad se presenta en m/s y km/h.
+
+Esta función se ejecuta únicamente cuando la búsqueda
+y la simulación final han sido exitosas.
+
+## Cobertura de diagramas — v0.3
+
+- [x] Flujo principal (`main`).
+- [x] Cálculo de derivadas.
+- [x] Paso de integración RK4.
+- [x] Simulación de la caída.
+- [x] Refinamiento del impacto.
+- [x] Búsqueda de beta.
+- [x] Lectura y validación de datos.
+- [x] Presentación de resultados.
+
+Los diagramas describen el diseño común para las
+implementaciones en C, Pascal y Fortran.
