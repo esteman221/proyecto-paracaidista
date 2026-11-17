@@ -36,6 +36,12 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.3 — Buscar_Beta (Disenno)
+
+- Búsqueda automática de beta mediante bisección.
+- Definición de tolerancias y límites de cálculo.
+- Pendiente: diagramas Nassi-Schneiderman.
+
 ### v0.3.2 — Avance de Disenno
 
 - Diseño de la simulación y refinamiento del impacto.

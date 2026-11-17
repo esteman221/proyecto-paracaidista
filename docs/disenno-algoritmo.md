@@ -434,24 +434,285 @@ La distancia final será una aproximación a la altura.
 La precisión completa también depende del error acumulado
 por los pasos RK4 anteriores.
 
-## 10. Búsqueda de beta
+## 10. Búsqueda automática de beta
 
-Se propone utilizar bisección:
+### 10.1. Responsabilidad
 
-1. Verificar si la velocidad objetivo es alcanzable
-   desde la altura indicada con beta no negativo.
-2. Encontrar un intervalo de valores de beta que
-   encierre la solución.
-3. Simular con el punto medio del intervalo.
-4. Comparar la velocidad de llegada con el objetivo.
-5. Si llega demasiado rápido, aumentar el límite
-   inferior de beta.
-6. Si llega demasiado lento, disminuir el límite
-   superior de beta.
-7. Repetir hasta cumplir la tolerancia o alcanzar
-   el límite de iteraciones.
+La función `buscar_beta` encuentra una resistencia no negativa
+que produzca una velocidad de impacto aproximadamente igual
+a la velocidad objetivo.
 
-Cada simulación comienza desde el reposo.
+Para evaluar cada candidato utiliza `simular_caida`.
+Cada simulación comienza desde el reposo y mantiene beta fijo.
+
+### 10.2. Error y criterio de éxito
+
+Se define:
+
+$$
+E(\beta)=v_{\text{impacto}}(\beta)-v_{\text{objetivo}}
+$$
+
+La búsqueda tiene éxito cuando:
+
+$$
+|E(\beta)|\leq\varepsilon_v
+$$
+
+Se propone inicialmente:
+
+| Parámetro | Valor |
+|---|---:|
+| Velocidad objetivo | 8 / 3.6 m/s |
+| Tolerancia de velocidad | 1e-6 m/s |
+| Máximo de duplicaciones del límite superior | 60 |
+| Máximo de iteraciones de bisección | 80 |
+
+La tolerancia de búsqueda se aplica a la velocidad calculada.
+La precisión de la simulación debe validarse por separado.
+
+### 10.3. Viabilidad
+
+La velocidad máxima de llegada con resistencia no negativa
+corresponde a la caída libre:
+
+$$
+v_{\text{libre}}=\sqrt{2gH}
+$$
+
+Si esta velocidad es menor que la velocidad objetivo menos
+la tolerancia, se informa que el objetivo es inalcanzable.
+
+Si coincide con el objetivo dentro de la tolerancia,
+se simula con beta igual a cero y se comprueba el resultado.
+
+### 10.4. Construcción del intervalo
+
+Se establece el límite inferior en cero.
+
+El límite superior comienza en m / (1 s), expresado en kg/s.
+Esta es una elección inicial de búsqueda.
+
+Se simula con el límite superior. Si la velocidad de impacto
+sigue siendo mayor que el objetivo, se duplica ese límite.
+
+El proceso termina cuando:
+
+- Se encuentra una velocidad dentro de la tolerancia.
+- Se obtiene una velocidad menor que la objetivo,
+  encerrando la solución.
+- Ocurre un fallo numérico.
+- Se alcanza el máximo de duplicaciones.
+
+### 10.5. Bisección
+
+Con la solución encerrada:
+
+1. Calcular el punto medio del intervalo.
+2. Simular la caída con ese beta.
+3. Calcular el error de velocidad.
+4. Si el error absoluto cumple la tolerancia, terminar.
+5. Si la velocidad es excesiva, actualizar el límite inferior.
+6. Si la velocidad es insuficiente, actualizar el límite superior.
+
+La búsqueda conserva el intervalo que encierra la solución.
+
+### 10.6. Pseudocódigo
+
+```text
+FUNCION buscar_beta(masa, altura, objetivo, configuracion)
+
+    exito ← FALSO
+    continuar ← VERDADERO
+    beta ← 0
+    resultado ← SIN_RESULTADO
+    motivo ← "Busqueda incompleta"
+
+    tolerancia ← configuracion.tolerancia_velocidad
+    velocidad_libre ← RAIZ(2 * g * altura)
+
+    SI velocidad_libre no es finita ENTONCES
+
+        continuar ← FALSO
+        motivo ← "Fallo numerico al comprobar viabilidad"
+
+    SINO
+
+        SI velocidad_libre < objetivo - tolerancia ENTONCES
+
+            continuar ← FALSO
+            motivo ← "Velocidad objetivo inalcanzable"
+
+        SINO
+
+            SI ABS(velocidad_libre - objetivo) <= tolerancia ENTONCES
+
+                resultado ← simular_caida(
+                    masa, altura, 0, configuracion
+                )
+
+                continuar ← FALSO
+
+                SI resultado.exito ENTONCES
+                    exito ← ABS(resultado.v - objetivo) <= tolerancia
+
+                    SI exito ENTONCES
+                        motivo ← "Objetivo alcanzado sin resistencia"
+                    SINO
+                        motivo ← "Revisar precision de la simulacion"
+                    FIN SI
+                SINO
+                    motivo ← resultado.motivo
+                FIN SI
+
+            FIN SI
+
+        FIN SI
+
+    FIN SI
+
+    SI continuar ENTONCES
+
+        inferior ← 0
+        superior ← masa / tiempo_referencia
+        duplicaciones ← 0
+        intervalo_encontrado ← FALSO
+
+        MIENTRAS continuar Y NO intervalo_encontrado
+
+            SI superior no es finito O superior <= 0 ENTONCES
+
+                continuar ← FALSO
+                motivo ← "Limite superior invalido"
+
+            SINO
+
+                beta ← superior
+                resultado ← simular_caida(
+                    masa, altura, beta, configuracion
+                )
+
+                SI NO resultado.exito ENTONCES
+
+                    continuar ← FALSO
+                    motivo ← resultado.motivo
+
+                SINO
+
+                    error ← resultado.v - objetivo
+
+                    SI ABS(error) <= tolerancia ENTONCES
+
+                        exito ← VERDADERO
+                        continuar ← FALSO
+                        motivo ← "Resistencia encontrada"
+
+                    SINO
+
+                        SI error < 0 ENTONCES
+
+                            intervalo_encontrado ← VERDADERO
+
+                        SINO
+
+                            SI duplicaciones < configuracion.max_expansiones ENTONCES
+                                superior ← 2 * superior
+                                duplicaciones ← duplicaciones + 1
+                            SINO
+                                continuar ← FALSO
+                                motivo ← "No se pudo encerrar la solucion"
+                            FIN SI
+
+                        FIN SI
+
+                    FIN SI
+
+                FIN SI
+
+            FIN SI
+
+        FIN MIENTRAS
+
+        iteraciones ← 0
+
+        MIENTRAS continuar
+                 Y intervalo_encontrado
+                 Y iteraciones < configuracion.max_busqueda
+
+            medio ← inferior + (superior - inferior) / 2
+
+            SI medio = inferior O medio = superior ENTONCES
+
+                continuar ← FALSO
+                motivo ← "No se puede reducir mas el intervalo"
+
+            SINO
+
+                beta ← medio
+                resultado ← simular_caida(
+                    masa, altura, beta, configuracion
+                )
+
+                SI NO resultado.exito ENTONCES
+
+                    continuar ← FALSO
+                    motivo ← resultado.motivo
+
+                SINO
+
+                    error ← resultado.v - objetivo
+
+                    SI ABS(error) <= tolerancia ENTONCES
+
+                        exito ← VERDADERO
+                        continuar ← FALSO
+                        motivo ← "Resistencia encontrada"
+
+                    SINO
+
+                        SI error > 0 ENTONCES
+                            inferior ← medio
+                        SINO
+                            superior ← medio
+                        FIN SI
+
+                    FIN SI
+
+                FIN SI
+
+            FIN SI
+
+            iteraciones ← iteraciones + 1
+
+        FIN MIENTRAS
+
+        SI continuar ENTONCES
+            motivo ← "Limite de iteraciones de busqueda alcanzado"
+        FIN SI
+
+    FIN SI
+
+    DEVOLVER (exito, motivo, beta, resultado)
+
+FIN FUNCION
+```
+
+`tiempo_referencia` es una constante de 1 segundo.
+El objetivo y la configuración deben ser válidos antes
+de iniciar la búsqueda.
+
+Beta y el resultado solo deben presentarse como una solución
+cuando el indicador de éxito sea verdadero.
+
+### 10.7. Dos usos diferentes de bisección
+
+| Función | Variable buscada | Condición |
+|---|---|---|
+| refinar_impacto | Tiempo adicional dentro del último paso | Distancia igual a la altura |
+| buscar_beta | Resistencia del paracaídas | Velocidad de impacto igual al objetivo |
+
+La primera búsqueda ocurre dentro de una simulación.
+La segunda ejecuta varias simulaciones completas.
 
 ## 11. Organización estructurada
 
