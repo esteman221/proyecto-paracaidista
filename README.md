@@ -36,6 +36,11 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.7 — Diagrama de refinar impacto
+
+- Diagrama de refinamiento del impacto del paracaidista. 
+- Pendiente: diagramas de búsqueda, entrada y salida.
+
 ### v0.3.6 — Diagrama de Simulacion de caida
 
 - Diagrama de simulacion de caida.

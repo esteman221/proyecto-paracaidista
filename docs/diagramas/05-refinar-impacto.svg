@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1500" height="1640" viewBox="0 0 1500 1640">
+
+  <rect width="1500" height="1640" fill="white"/>
+
+  <style>
+    text {
+      font-family: Arial, sans-serif;
+      font-size: 17px;
+      fill: #172033;
+      text-anchor: middle;
+    }
+    .titulo {
+      font-size: 27px;
+      font-weight: bold;
+    }
+    .bloque {
+      fill: white;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .condicion {
+      fill: #e8f1fa;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .ciclo {
+      fill: #e2e8f0;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .linea {
+      fill: none;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+  </style>
+
+  <text x="750" y="42" class="titulo">refinar_impacto</text>
+  <text x="750" y="73">Diagrama Nassi-Schneiderman</text>
+
+  <!-- Entradas y precondiciones -->
+  <rect x="30" y="100" width="1440" height="90" class="bloque"/>
+  <text x="750" y="129">
+    Recibir x, v, masa, beta, altura, h, tolerancia_tiempo y max_refinamientos
+  </text>
+  <text x="750" y="157">
+    Precondición: x &lt; altura y un paso de duración h alcanza el suelo
+  </text>
+  <text x="750" y="180">
+    Entradas y configuración previamente validadas
+  </text>
+
+  <!-- Inicialización -->
+  <rect x="30" y="190" width="1440" height="90" class="bloque"/>
+  <text x="750" y="218">a ← 0; b ← h; iteraciones ← 0; fallo ← FALSO</text>
+  <text x="750" y="244">dt ← 0; x_impacto ← x; v_impacto ← v</text>
+  <text x="750" y="269">motivo ← "Refinamiento incompleto"</text>
+
+  <!-- Ciclo -->
+  <rect x="30" y="280" width="1440" height="700" class="ciclo"/>
+  <text x="750" y="310">MIENTRAS (b − a) &gt; tolerancia_tiempo</text>
+  <text x="750" y="337">
+    Y iteraciones &lt; max_refinamientos Y NO fallo
+  </text>
+
+  <rect x="65" y="355" width="1405" height="60" class="bloque"/>
+  <text x="767" y="393">medio ← a + (b − a) / 2</text>
+
+  <!-- Detección de estancamiento -->
+  <rect x="65" y="415" width="1405" height="90" class="condicion"/>
+  <path d="M65 415 L415 505 L1470 415" class="linea"/>
+  <text x="767" y="444">¿medio = a O medio = b?</text>
+  <text x="120" y="489">Sí</text>
+  <text x="1410" y="489">No</text>
+
+  <rect x="65" y="505" width="350" height="415" class="bloque"/>
+  <text x="240" y="670">fallo ← VERDADERO</text>
+  <text x="240" y="702">motivo ← "No se puede</text>
+  <text x="240" y="734">reducir más el intervalo"</text>
+
+  <!-- Evaluación desde el estado original -->
+  <rect x="415" y="505" width="1055" height="85" class="bloque"/>
+  <text x="942" y="537">
+    (x_prueba, v_prueba) ← paso_rk4(x, v, masa, beta, medio)
+  </text>
+  <text x="942" y="567">
+    Conservar x y v originales para todas las evaluaciones
+  </text>
+
+  <!-- Resultados no finitos -->
+  <rect x="415" y="590" width="1055" height="90" class="condicion"/>
+  <path d="M415 590 L765 680 L1470 590" class="linea"/>
+  <text x="942" y="619">¿Algún resultado no es finito?</text>
+  <text x="465" y="664">Sí</text>
+  <text x="1420" y="664">No</text>
+
+  <rect x="415" y="680" width="350" height="240" class="bloque"/>
+  <text x="590" y="766">fallo ← VERDADERO</text>
+  <text x="590" y="799">motivo ←</text>
+  <text x="590" y="832">"Resultado numérico no finito"</text>
+
+  <!-- Actualización del intervalo -->
+  <rect x="765" y="680" width="705" height="90" class="condicion"/>
+  <path d="M765 680 L1117 770 L1470 680" class="linea"/>
+  <text x="1117" y="709">¿x_prueba &lt; altura?</text>
+  <text x="815" y="754">Sí</text>
+  <text x="1420" y="754">No</text>
+
+  <rect x="765" y="770" width="352" height="150" class="bloque"/>
+  <text x="941" y="852">a ← medio</text>
+
+  <rect x="1117" y="770" width="353" height="150" class="bloque"/>
+  <text x="1293" y="852">b ← medio</text>
+
+  <!-- Contador común a todas las ramas del ciclo -->
+  <rect x="65" y="920" width="1405" height="60" class="bloque"/>
+  <text x="767" y="958">iteraciones ← iteraciones + 1</text>
+
+  <!-- Fuera del ciclo -->
+  <rect x="30" y="980" width="1440" height="65" class="bloque"/>
+  <text x="750" y="1020">
+    exito ← NO fallo Y (b − a) ≤ tolerancia_tiempo
+  </text>
+
+  <rect x="30" y="1045" width="1440" height="90" class="condicion"/>
+  <path d="M30 1045 L1110 1135 L1470 1045" class="linea"/>
+  <text x="750" y="1074">¿exito?</text>
+  <text x="85" y="1119">Sí</text>
+  <text x="1415" y="1119">No</text>
+
+  <!-- Evaluación final -->
+  <rect x="30" y="1135" width="1080" height="90" class="bloque"/>
+  <text x="570" y="1166">dt ← a + (b − a) / 2</text>
+  <text x="570" y="1197">
+    (x_impacto, v_impacto) ← paso_rk4(x, v, masa, beta, dt)
+  </text>
+
+  <rect x="1110" y="1135" width="360" height="390" class="bloque"/>
+  <text x="1290" y="1307">Conservar exito ← FALSO</text>
+  <text x="1290" y="1341">y el motivo del fallo</text>
+  <text x="1290" y="1375">o del refinamiento incompleto</text>
+
+  <rect x="30" y="1225" width="1080" height="90" class="condicion"/>
+  <path d="M30 1225 L570 1315 L1110 1225" class="linea"/>
+  <text x="570" y="1254">¿Algún resultado final no es finito?</text>
+  <text x="85" y="1299">Sí</text>
+  <text x="1055" y="1299">No</text>
+
+  <rect x="30" y="1315" width="540" height="210" class="bloque"/>
+  <text x="300" y="1391">exito ← FALSO</text>
+  <text x="300" y="1425">motivo ← "Resultado numérico no finito"</text>
+
+  <rect x="570" y="1315" width="540" height="210" class="bloque"/>
+  <text x="840" y="1410">motivo ← "Impacto localizado"</text>
+
+  <!-- Retorno común -->
+  <rect x="30" y="1525" width="1440" height="80" class="bloque"/>
+  <text x="750" y="1573">
+    Devolver (exito, motivo, dt, x_impacto, v_impacto)
+  </text>
+
+</svg>

@@ -49,9 +49,22 @@ Cuando un paso alcanza o supera la altura, utiliza
 El resultado solo representa una llegada válida cuando
 el indicador de éxito es verdadero.
 
+## Refinamiento del impacto
+
+![Diagrama de refinar_impacto](05-refinar-impacto.svg)
+
+Localiza el impacto mediante bisección dentro del último
+intervalo temporal de la simulación.
+
+Cada evaluación RK4 parte del mismo estado anterior
+al suelo. La función devuelve el tiempo adicional,
+la distancia y la velocidad aproximadas del impacto.
+
+El resultado solo es válido cuando el indicador de éxito
+es verdadero.
+
 ## Diagramas pendientes
 
 - Lectura y validación de datos.
-- Refinamiento del impacto.
 - Búsqueda de beta.
 - Presentación de resultados.
