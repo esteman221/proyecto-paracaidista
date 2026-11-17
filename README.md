@@ -36,6 +36,12 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.2 — Avance de Disenno
+
+- Diseño de la simulación y refinamiento del impacto.
+- Definición inicial del paso temporal y límites de cálculo.
+- Pendiente: búsqueda de beta y diagramas Nassi-Schneiderman.
+
 ### v0.3.1.1 — Correcciones del README
 - Agregar Readme
 

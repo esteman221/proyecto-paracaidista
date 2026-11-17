@@ -194,16 +194,245 @@ de h produce una aproximación adecuada.
 
 ## 9. Simulación de una caída
 
-1. Inicializar tiempo, distancia y velocidad en cero.
-2. Mantener beta fijo durante toda la simulación.
-3. Avanzar mediante pasos RK4.
-4. Detectar cuándo se alcanza o supera la altura.
-5. Si se supera, refinar el último intervalo para
-   aproximar el instante de llegada al suelo.
-6. Devolver el tiempo y la velocidad de impacto.
+### 9.1. Responsabilidad
 
-La simulación tendrá un límite de pasos e informará
-si no puede completarse.
+La función `simular_caida` calcula el tiempo y la velocidad
+de llegada al suelo para una masa total, altura y beta dados.
+
+Beta permanece fijo durante toda la simulación.
+
+La función utiliza `paso_rk4` para avanzar y `refinar_impacto`
+para localizar la llegada dentro del último intervalo.
+
+### 9.2. Parámetros numéricos iniciales
+
+| Parámetro | Valor propuesto | Propósito |
+|---|---:|---|
+| Paso máximo | 0.02 s | Limitar el avance temporal |
+| Factor de escala temporal | 0.2 | Reducir el paso cuando la resistencia es elevada |
+| Tolerancia temporal del impacto | 1e-8 s | Finalizar el refinamiento |
+| Máximo de pasos | 10000000 | Limitar el trabajo de una simulación |
+| Máximo de refinamientos | 80 | Limitar la búsqueda del impacto |
+
+Estos valores son decisiones de implementación y deberán
+validarse mediante pruebas.
+
+La tolerancia temporal controla el ancho del intervalo
+numérico del impacto. No garantiza por sí sola que el
+error total de la simulación sea de ese tamaño.
+
+### 9.3. Selección del paso
+
+Para beta positivo:
+
+$$
+h=\min\left(h_{\max},\,0.2\frac{m}{\beta}\right)
+$$
+
+Para beta igual a cero:
+
+$$
+h=h_{\max}
+$$
+
+El paso se mantiene fijo dentro de cada simulación,
+excepto al localizar el impacto.
+
+### 9.4. Condiciones iniciales
+
+- Tiempo: 0.
+- Distancia recorrida: 0.
+- Velocidad: 0.
+
+Las entradas deben ser finitas, con masa y altura positivas,
+beta no negativo y configuración numérica válida.
+
+### 9.5. Detección del impacto
+
+Si la distancia obtenida después de un paso es menor
+que la altura, se acepta el nuevo estado.
+
+Si alcanza o supera la altura, se conserva el estado
+anterior y se refina el intervalo temporal del impacto.
+
+No se sustituye simplemente la distancia calculada por
+la altura, porque el tiempo y la velocidad también deben
+corresponder al instante de llegada.
+
+### 9.6. Pseudocódigo de simulación
+
+```text
+FUNCION simular_caida(masa, altura, beta, configuracion)
+
+    t ← 0
+    x ← 0
+    v ← 0
+    pasos ← 0
+
+    terminado ← FALSO
+    exito ← FALSO
+    motivo ← "Limite de pasos alcanzado"
+
+    h ← configuracion.paso_maximo
+
+    SI beta > 0 ENTONCES
+        h ← MINIMO(h, 0.2 * masa / beta)
+    FIN SI
+
+    SI h no es finito O h <= 0 ENTONCES
+        terminado ← VERDADERO
+        motivo ← "Paso temporal invalido"
+    FIN SI
+
+    MIENTRAS NO terminado Y pasos < configuracion.max_pasos
+
+        (x_nuevo, v_nuevo) ← paso_rk4(x, v, masa, beta, h)
+        pasos ← pasos + 1
+
+        SI x_nuevo o v_nuevo no son finitos ENTONCES
+
+            terminado ← VERDADERO
+            motivo ← "Resultado numerico no finito"
+
+        SINO
+
+            SI x_nuevo >= altura ENTONCES
+
+                impacto ← refinar_impacto(
+                    x, v, masa, beta, altura, h,
+                    configuracion.tolerancia_tiempo,
+                    configuracion.max_refinamientos
+                )
+
+                terminado ← VERDADERO
+                exito ← impacto.exito
+                motivo ← impacto.motivo
+
+                SI exito ENTONCES
+                    t ← t + impacto.dt
+                    x ← impacto.distancia
+                    v ← impacto.velocidad
+                FIN SI
+
+            SINO
+
+                SI t + h <= t ENTONCES
+                    terminado ← VERDADERO
+                    motivo ← "El tiempo no puede avanzar"
+                SINO
+                    x ← x_nuevo
+                    v ← v_nuevo
+                    t ← t + h
+                FIN SI
+
+            FIN SI
+
+        FIN SI
+
+    FIN MIENTRAS
+
+    DEVOLVER (exito, motivo, t, x, v)
+
+FIN FUNCION
+```
+
+Los valores de tiempo, distancia y velocidad solo representan
+un impacto válido cuando el indicador de éxito es verdadero.
+
+### 9.7. Refinamiento del impacto
+
+Precondiciones:
+
+- La distancia inicial x es menor que la altura.
+- Un paso RK4 de duración h alcanza o supera la altura.
+- La tolerancia temporal es positiva.
+- El máximo de refinamientos es un entero positivo.
+
+Se busca un tiempo adicional dt entre 0 y h mediante
+bisección. Todas las evaluaciones parten del mismo estado
+anterior al impacto.
+
+```text
+FUNCION refinar_impacto(
+    x, v, masa, beta, altura, h,
+    tolerancia_tiempo, max_refinamientos
+)
+
+    a ← 0
+    b ← h
+    iteraciones ← 0
+    fallo ← FALSO
+
+    dt ← 0
+    x_impacto ← x
+    v_impacto ← v
+    motivo ← "Refinamiento incompleto"
+
+    MIENTRAS (b - a) > tolerancia_tiempo
+             Y iteraciones < max_refinamientos
+             Y NO fallo
+
+        medio ← a + (b - a) / 2
+
+        SI medio = a O medio = b ENTONCES
+
+            fallo ← VERDADERO
+            motivo ← "No se puede reducir mas el intervalo"
+
+        SINO
+
+            (x_prueba, v_prueba) ← paso_rk4(
+                x, v, masa, beta, medio
+            )
+
+            SI x_prueba o v_prueba no son finitos ENTONCES
+
+                fallo ← VERDADERO
+                motivo ← "Resultado numerico no finito"
+
+            SINO
+
+                SI x_prueba < altura ENTONCES
+                    a ← medio
+                SINO
+                    b ← medio
+                FIN SI
+
+            FIN SI
+
+        FIN SI
+
+        iteraciones ← iteraciones + 1
+
+    FIN MIENTRAS
+
+    exito ← NO fallo Y (b - a) <= tolerancia_tiempo
+
+    SI exito ENTONCES
+
+        dt ← a + (b - a) / 2
+
+        (x_impacto, v_impacto) ← paso_rk4(
+            x, v, masa, beta, dt
+        )
+
+        SI x_impacto o v_impacto no son finitos ENTONCES
+            exito ← FALSO
+            motivo ← "Resultado numerico no finito"
+        SINO
+            motivo ← "Impacto localizado"
+        FIN SI
+
+    FIN SI
+
+    DEVOLVER (exito, motivo, dt, x_impacto, v_impacto)
+
+FIN FUNCION
+```
+
+La distancia final será una aproximación a la altura.
+La precisión completa también depende del error acumulado
+por los pasos RK4 anteriores.
 
 ## 10. Búsqueda de beta
 
