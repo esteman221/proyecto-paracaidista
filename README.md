@@ -36,6 +36,11 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.6 — Diagrama de Simulacion de caida
+
+- Diagrama de simulacion de caida.
+- Pendiente: demas diagramas.
+
 ### v0.3.5 - Diagramas de RK4 y calcular derivada
 
 - Diagramas de `calcular_derivadas` y `paso_rk4`.

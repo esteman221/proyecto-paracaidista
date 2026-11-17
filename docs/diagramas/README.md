@@ -36,10 +36,22 @@ Los valores originales se conservan durante todas las
 evaluaciones. Los valores k representan pendientes
 y no incluyen el factor h.
 
+## Simulación de la caída
+
+![Diagrama de simular_caida](04-simular-caida.svg)
+
+Inicializa el estado, selecciona el paso temporal y repite
+RK4 hasta detectar el suelo, un error o el límite de pasos.
+
+Cuando un paso alcanza o supera la altura, utiliza
+`refinar_impacto` desde el último estado anterior al suelo.
+
+El resultado solo representa una llegada válida cuando
+el indicador de éxito es verdadero.
+
 ## Diagramas pendientes
 
 - Lectura y validación de datos.
-- Simulación de la caída.
 - Refinamiento del impacto.
 - Búsqueda de beta.
 - Presentación de resultados.

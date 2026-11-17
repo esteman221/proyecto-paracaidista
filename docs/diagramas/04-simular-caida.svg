@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1400" height="1430" viewBox="0 0 1400 1430">
+
+  <rect width="1400" height="1430" fill="white"/>
+
+  <style>
+    text {
+      font-family: Arial, sans-serif;
+      font-size: 17px;
+      fill: #172033;
+      text-anchor: middle;
+    }
+    .titulo {
+      font-size: 27px;
+      font-weight: bold;
+    }
+    .bloque {
+      fill: white;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .condicion {
+      fill: #e8f1fa;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .ciclo {
+      fill: #e2e8f0;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .linea {
+      fill: none;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+  </style>
+
+  <text x="700" y="42" class="titulo">simular_caida</text>
+  <text x="700" y="73">Diagrama Nassi-Schneiderman</text>
+
+  <!-- Preparación -->
+  <rect x="30" y="100" width="1340" height="60" class="bloque"/>
+  <text x="700" y="137">
+    Recibir masa, altura, beta y configuración previamente validados
+  </text>
+
+  <rect x="30" y="160" width="1340" height="80" class="bloque"/>
+  <text x="700" y="190">t ← 0; x ← 0; v ← 0; pasos ← 0</text>
+  <text x="700" y="219">
+    terminado ← FALSO; exito ← FALSO; motivo ← "Límite de pasos alcanzado"
+  </text>
+
+  <rect x="30" y="240" width="1340" height="55" class="bloque"/>
+  <text x="700" y="275">h ← configuración.paso_maximo</text>
+
+  <!-- Selección del paso -->
+  <rect x="30" y="295" width="1340" height="85" class="condicion"/>
+  <path d="M30 295 L700 380 L1370 295" class="linea"/>
+  <text x="700" y="322">¿beta &gt; 0?</text>
+  <text x="100" y="364">Sí</text>
+  <text x="1300" y="364">No</text>
+
+  <rect x="30" y="380" width="670" height="55" class="bloque"/>
+  <text x="365" y="415">h ← mínimo(h, 0.2 × masa / beta)</text>
+
+  <rect x="700" y="380" width="670" height="55" class="bloque"/>
+  <text x="1035" y="415">Conservar h</text>
+
+  <!-- Comprobación del paso -->
+  <rect x="30" y="435" width="1340" height="85" class="condicion"/>
+  <path d="M30 435 L700 520 L1370 435" class="linea"/>
+  <text x="700" y="462">¿h no es finito o h ≤ 0?</text>
+  <text x="100" y="504">Sí</text>
+  <text x="1300" y="504">No</text>
+
+  <rect x="30" y="520" width="670" height="65" class="bloque"/>
+  <text x="365" y="547">terminado ← VERDADERO</text>
+  <text x="365" y="572">motivo ← "Paso temporal inválido"</text>
+
+  <rect x="700" y="520" width="670" height="65" class="bloque"/>
+  <text x="1035" y="560">Mantener terminado ← FALSO</text>
+
+  <!-- Ciclo: cabecera y franja izquierda -->
+  <rect x="30" y="585" width="1340" height="735" class="ciclo"/>
+  <text x="700" y="622">
+    MIENTRAS NO terminado Y pasos &lt; configuración.max_pasos
+  </text>
+
+  <!-- Cuerpo del ciclo -->
+  <rect x="65" y="645" width="1305" height="75" class="bloque"/>
+  <text x="717" y="676">
+    (x_nuevo, v_nuevo) ← paso_rk4(x, v, masa, beta, h)
+  </text>
+  <text x="717" y="704">pasos ← pasos + 1</text>
+
+  <!-- Error numérico -->
+  <rect x="65" y="720" width="1305" height="90" class="condicion"/>
+  <path d="M65 720 L380 810 L1370 720" class="linea"/>
+  <text x="717" y="748">¿Algún resultado no es finito?</text>
+  <text x="120" y="793">Sí</text>
+  <text x="1310" y="793">No</text>
+
+  <rect x="65" y="810" width="315" height="510" class="bloque"/>
+  <text x="222" y="1010">terminado ← VERDADERO</text>
+  <text x="222" y="1042">motivo ←</text>
+  <text x="222" y="1074">"Resultado no finito"</text>
+
+  <!-- Detección del suelo -->
+  <rect x="380" y="810" width="990" height="90" class="condicion"/>
+  <path d="M380 810 L875 900 L1370 810" class="linea"/>
+  <text x="875" y="839">¿x_nuevo ≥ altura?</text>
+  <text x="430" y="884">Sí</text>
+  <text x="1320" y="884">No</text>
+
+  <!-- Rama de impacto -->
+  <rect x="380" y="900" width="495" height="110" class="bloque"/>
+  <text x="627" y="929">impacto ← refinar_impacto usando</text>
+  <text x="627" y="957">el estado anterior (x, v), masa, beta,</text>
+  <text x="627" y="985">altura, h y parámetros de refinamiento</text>
+
+  <rect x="380" y="1010" width="495" height="90" class="bloque"/>
+  <text x="627" y="1036">terminado ← VERDADERO</text>
+  <text x="627" y="1062">exito ← impacto.exito</text>
+  <text x="627" y="1088">motivo ← impacto.motivo</text>
+
+  <rect x="380" y="1100" width="495" height="90" class="condicion"/>
+  <path d="M380 1100 L627 1190 L875 1100" class="linea"/>
+  <text x="627" y="1128">¿exito?</text>
+  <text x="420" y="1173">Sí</text>
+  <text x="835" y="1173">No</text>
+
+  <rect x="380" y="1190" width="247" height="130" class="bloque"/>
+  <text x="503" y="1225">t ← t + impacto.dt</text>
+  <text x="503" y="1257">x ← impacto.distancia</text>
+  <text x="503" y="1289">v ← impacto.velocidad</text>
+
+  <rect x="627" y="1190" width="248" height="130" class="bloque"/>
+  <text x="751" y="1245">Conservar estado</text>
+  <text x="751" y="1274">anterior y error</text>
+
+  <!-- Rama anterior al impacto -->
+  <rect x="875" y="900" width="495" height="90" class="condicion"/>
+  <path d="M875 900 L1122 990 L1370 900" class="linea"/>
+  <text x="1122" y="929">¿t + h ≤ t?</text>
+  <text x="915" y="973">Sí</text>
+  <text x="1330" y="973">No</text>
+
+  <rect x="875" y="990" width="247" height="330" class="bloque"/>
+  <text x="998" y="1102">terminado ← VERDADERO</text>
+  <text x="998" y="1134">motivo ←</text>
+  <text x="998" y="1166">"El tiempo no</text>
+  <text x="998" y="1198">puede avanzar"</text>
+
+  <rect x="1122" y="990" width="248" height="330" class="bloque"/>
+  <text x="1246" y="1120">x ← x_nuevo</text>
+  <text x="1246" y="1155">v ← v_nuevo</text>
+  <text x="1246" y="1190">t ← t + h</text>
+
+  <!-- Resultado, fuera del ciclo -->
+  <rect x="30" y="1320" width="1340" height="75" class="bloque"/>
+  <text x="700" y="1365">Devolver (exito, motivo, t, x, v)</text>
+
+</svg>
