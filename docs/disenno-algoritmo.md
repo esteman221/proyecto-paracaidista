@@ -61,7 +61,7 @@ detallar RK4, la detección del impacto y la búsqueda.
 | Función | Entradas | Salidas |
 |---|---|---|
 | leer_datos | Entrada por consola | Masas, altura e indicador de lectura válida |
-| validar_datos | Masas y altura | Indicador de validez y causa del error |
+| validar_datos | Masas y altura | Indicador de validez, causa del error y masa total si los datos son válidos |
 | calcular_derivadas | Velocidad, masa total y beta | Derivadas de distancia y velocidad |
 | paso_rk4 | Distancia, velocidad, masa, beta y paso temporal | Distancia y velocidad siguientes |
 | simular_caida | Masa total, altura, beta y configuración numérica | Tiempo y velocidad de impacto, indicador de éxito |

@@ -36,6 +36,11 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.3.4 — Primer Diagrama
+
+- Diagrama Nassi-Schneiderman de `main`.
+- Pendiente: diagramas de las funciones auxiliares.
+
 ### v0.3.3 — Buscar_Beta (Disenno)
 
 - Búsqueda automática de beta mediante bisección.

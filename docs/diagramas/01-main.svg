@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="850" viewBox="0 0 1200 850">
+
+  <rect width="1200" height="850" fill="white"/>
+
+  <style>
+    text {
+      font-family: Arial, sans-serif;
+      font-size: 17px;
+      fill: #172033;
+      text-anchor: middle;
+    }
+    .titulo {
+      font-size: 27px;
+      font-weight: bold;
+    }
+    .bloque {
+      fill: white;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .condicion {
+      fill: #e8f1fa;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+    .linea {
+      fill: none;
+      stroke: #334155;
+      stroke-width: 2;
+    }
+  </style>
+
+  <text x="600" y="43" class="titulo">main</text>
+  <text x="600" y="72">Diagrama Nassi-Schneiderman</text>
+
+  <!-- Secuencia inicial -->
+  <rect x="30" y="100" width="1140" height="65" class="bloque"/>
+  <text x="600" y="139">
+    Establecer configuración numérica y velocidad objetivo: 8 / 3.6 m/s
+  </text>
+
+  <rect x="30" y="165" width="1140" height="65" class="bloque"/>
+  <text x="600" y="204">
+    leer_datos: masa de la persona, masa del equipo y altura
+  </text>
+
+  <!-- Primera selección -->
+  <rect x="30" y="230" width="1140" height="100" class="condicion"/>
+  <path d="M 30 230 L 600 330 L 1170 230" class="linea"/>
+  <text x="600" y="257">¿Lectura correcta?</text>
+  <text x="110" y="315">Sí</text>
+  <text x="1090" y="315">No</text>
+
+  <!-- Rama de lectura correcta -->
+  <rect x="30" y="330" width="570" height="80" class="bloque"/>
+  <text x="315" y="361">validar_datos: valores finitos y signos válidos;</text>
+  <text x="315" y="386">calcular masa total y comprobar que sea finita</text>
+
+  <!-- Rama de fallo de lectura -->
+  <rect x="600" y="330" width="570" height="440" class="bloque"/>
+  <text x="885" y="530">Mostrar error de lectura:</text>
+  <text x="885" y="560">se requieren valores numéricos</text>
+
+  <!-- Segunda selección -->
+  <rect x="30" y="410" width="570" height="100" class="condicion"/>
+  <path d="M 30 410 L 450 510 L 600 410" class="linea"/>
+  <text x="315" y="437">¿Datos válidos?</text>
+  <text x="85" y="495">Sí</text>
+  <text x="555" y="495">No</text>
+
+  <!-- Rama de datos válidos -->
+  <rect x="30" y="510" width="420" height="70" class="bloque"/>
+  <text x="240" y="540">buscar_beta(masa total, altura,</text>
+  <text x="240" y="565">objetivo, configuración)</text>
+
+  <!-- Rama de datos inválidos -->
+  <rect x="450" y="510" width="150" height="260" class="bloque"/>
+  <text x="525" y="615">Mostrar</text>
+  <text x="525" y="641">causa de</text>
+  <text x="525" y="667">datos inválidos</text>
+
+  <!-- Tercera selección -->
+  <rect x="30" y="580" width="420" height="100" class="condicion"/>
+  <path d="M 30 580 L 240 680 L 450 580" class="linea"/>
+  <text x="240" y="607">¿Búsqueda exitosa?</text>
+  <text x="75" y="665">Sí</text>
+  <text x="405" y="665">No</text>
+
+  <rect x="30" y="680" width="210" height="90" class="bloque"/>
+  <text x="135" y="710">mostrar_resultados:</text>
+  <text x="135" y="735">beta, tiempo y</text>
+  <text x="135" y="758">velocidad de impacto</text>
+
+  <rect x="240" y="680" width="210" height="90" class="bloque"/>
+  <text x="345" y="717">Mostrar motivo</text>
+  <text x="345" y="745">del fallo de búsqueda</text>
+
+  <!-- Salida común -->
+  <rect x="30" y="770" width="1140" height="55" class="bloque"/>
+  <text x="600" y="805">Finalizar programa</text>
+
+</svg>
