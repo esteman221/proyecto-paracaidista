@@ -36,6 +36,11 @@ aproximada de 8 km/h.
 
 ## Versionamiento
 
+### v0.4 - Respecto al uso de la IA
+
+- Incorporación de USO-DE-LA-IA.md para documentar el apoyo
+  de IA en la redacción y elaboración de diagramas SVG.
+
 ### v0.3.9 — Diagramas restantes realizados
 
 - Diagramas restantes realizados. 
